@@ -177,3 +177,7 @@ Test Engineer specialising in:
 * API Automation
 * Quality Engineering
 * Test Tooling and Internal Developer Platforms
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
