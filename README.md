@@ -180,4 +180,9 @@ Test Engineer specialising in:
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is published as part of my professional software automation portfolio.
+
+The source code is provided for educational and demonstration purposes only. You are welcome to view and learn from the implementation, however redistribution, republishing, commercial use, or presenting this work as your own is not permitted without prior written permission.
+
+See the LICENSE file for full details.
+
