@@ -1,0 +1,641 @@
+<Window x:Class="ReqNRollTestConsole.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Automation Console"
+        Height="720" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource AppBackgroundBrush}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- =============================== -->
+        <!-- SIDE NAVIGATION                 -->
+        <!-- =============================== -->
+        <Border x:Name="SidePanel"
+                Grid.Column="0"
+                Background="{DynamicResource SurfaceBrush}"
+                Opacity="0">
+
+            <Border.RenderTransform>
+                <TranslateTransform X="-40"/>
+            </Border.RenderTransform>
+
+            <DockPanel Margin="4">
+
+                <StackPanel DockPanel.Dock="Top">
+                    <TextBlock Text="Automation Suite"
+                               FontFamily="Cascadia Code"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                    <Button x:Name="FrontEndNavButton"
+                            Content="Web Scenarios"
+                            Margin="0,16,0,8"
+                            HorizontalAlignment="Stretch"
+                            Style="{DynamicResource PrimaryButton}"
+                            Click="FrontEndNavButton_Click"/>
+
+                    <Button x:Name="SqlNavButton"
+                            Content="API Scenarios"
+                            Margin="0,0,0,8"
+                            HorizontalAlignment="Stretch"
+                            Style="{DynamicResource PrimaryButton}"
+                            Click="SqlNavButton_Click"/>
+                </StackPanel>
+
+                <StackPanel DockPanel.Dock="Bottom"
+                            Margin="0,8,0,0">
+
+                    <TextBlock Text="Environment"
+                               Style="{StaticResource BodyText}"
+                               Margin="0,0,0,4"/>
+
+                    <ComboBox x:Name="SideEnvironmentCombo"
+                              MinWidth="160"
+                              SelectedIndex="0"
+                              SelectionChanged="SideEnvironmentCombo_SelectionChanged">
+                        <ComboBoxItem Content="Main"/>
+                        <ComboBoxItem Content="Buggy"/>
+                    </ComboBox>
+
+                    <Border x:Name="ExecutionGuidePanel"
+                            Background="{DynamicResource SurfaceAltBrush}"
+                            BorderBrush="{DynamicResource BorderBrushColor}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="12"
+                            Margin="0,-6,0,0"
+                            MinHeight="330"
+                            HorizontalAlignment="Stretch">
+
+                        <Border.Effect>
+                            <DropShadowEffect Color="#1FC100"
+                                              BlurRadius="10"
+                                              ShadowDepth="0"
+                                              Opacity="0.18"/>
+                        </Border.Effect>
+
+                        <StackPanel>
+                            <TextBlock Text="Execution Guide"
+                                       Style="{StaticResource Heading2Text}"
+                                       Margin="0,0,0,16"/>
+
+                            <!-- STEP 1 -->
+                            <StackPanel Margin="0,0,0,14">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="GuideArrowEnvironment"
+                                               Text="›"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"
+                                               FontFamily="Cascadia Code"
+                                               FontWeight="SemiBold"
+                                               FontSize="12"
+                                               Opacity="0.35"
+                                               Margin="0,0,8,0">
+                                        <TextBlock.RenderTransform>
+                                            <TranslateTransform X="0"/>
+                                        </TextBlock.RenderTransform>
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect Color="#1FC100"
+                                                              BlurRadius="8"
+                                                              ShadowDepth="0"
+                                                              Opacity="0"/>
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+
+                                    <TextBlock Text="Select Environment"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"
+                                               FontFamily="Cascadia Code"
+                                               FontWeight="SemiBold"/>
+                                </StackPanel>
+
+                                <TextBlock Text="Choose Main or Buggy from the environment selector."
+                                           Style="{StaticResource BodyText}"
+                                           Margin="10,2,0,0"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+
+                            <!-- STEP 2 -->
+                            <StackPanel Margin="0,0,0,14">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="GuideArrowTestStyle"
+                                               Text="›"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"
+                                               FontFamily="Cascadia Code"
+                                               FontWeight="SemiBold"
+                                               FontSize="12"
+                                               Opacity="0.35"
+                                               Margin="0,0,8,0">
+                                        <TextBlock.RenderTransform>
+                                            <TranslateTransform X="0"/>
+                                        </TextBlock.RenderTransform>
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect Color="#1FC100"
+                                                              BlurRadius="8"
+                                                              ShadowDepth="0"
+                                                              Opacity="0"/>
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+
+                                    <TextBlock Text="Choose Test Style"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"
+                                               FontFamily="Cascadia Code"
+                                               FontWeight="SemiBold"/>
+                                </StackPanel>
+
+                                <TextBlock Text="Pick the style for the selected domain."
+                                           Style="{StaticResource BodyText}"
+                                           Margin="10,2,0,0"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+
+                            <!-- STEP 3 -->
+                            <StackPanel Margin="0,0,0,14">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="GuideArrowArea"
+                                               Text="›"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"
+                                               FontFamily="Cascadia Code"
+                                               FontWeight="SemiBold"
+                                               FontSize="12"
+                                               Opacity="0.35"
+                                               Margin="0,0,8,0">
+                                        <TextBlock.RenderTransform>
+                                            <TranslateTransform X="0"/>
+                                        </TextBlock.RenderTransform>
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect Color="#1FC100"
+                                                              BlurRadius="8"
+                                                              ShadowDepth="0"
+                                                              Opacity="0"/>
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+
+                                    <TextBlock Text="Select Area"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"
+                                               FontFamily="Cascadia Code"
+                                               FontWeight="SemiBold"/>
+                                </StackPanel>
+
+                                <TextBlock Text="Choose the feature or API area to validate."
+                                           Style="{StaticResource BodyText}"
+                                           Margin="10,2,0,0"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+
+                            <!-- STEP 4 -->
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="GuideArrowRunTests"
+                                               Text="›"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"
+                                               FontFamily="Cascadia Code"
+                                               FontWeight="SemiBold"
+                                               FontSize="12"
+                                               Opacity="0.35"
+                                               Margin="0,0,8,0">
+                                        <TextBlock.RenderTransform>
+                                            <TranslateTransform X="0"/>
+                                        </TextBlock.RenderTransform>
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect Color="#1FC100"
+                                                              BlurRadius="8"
+                                                              ShadowDepth="0"
+                                                              Opacity="0"/>
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+
+                                    <TextBlock Text="Run Tests"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"
+                                               FontFamily="Cascadia Code"
+                                               FontWeight="SemiBold"/>
+                                </StackPanel>
+
+                                <TextBlock Text="Run Scenario executes one selected test. Run Area executes all tests in that area."
+                                           Style="{StaticResource BodyText}"
+                                           Margin="10,2,0,0"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="5"
+         Background="{DynamicResource SurfaceAltBrush}"
+         BorderBrush="{DynamicResource BorderBrushColor}"
+         BorderThickness="1"
+         CornerRadius="8"
+         Padding="12"
+         Margin="0,0,0,0"
+         VerticalAlignment="Bottom">
+
+                        <StackPanel>
+                            <TextBlock Text="Utilities"
+                    Style="{StaticResource Heading2Text}"
+                    Margin="0,0,0,8"/>
+
+                            <WrapPanel>
+                                <Button x:Name="OpenReportButton"
+                     Content="Open Report"
+                     Style="{DynamicResource GhostButton}"
+                     Margin="0,0,8,8"
+                     Click="OpenReportButton_Click"/>
+
+                                <Button x:Name="ExportDetailedLogButton"
+                     Content="Export Log"
+                     Style="{DynamicResource GhostButton}"
+                     Margin="0,0,8,8"
+                     Click="ExportDetailedLogButton_Click"/>
+
+                                <Button x:Name="ExportPackageButton"
+                     Content="Export Package"
+                     Style="{DynamicResource GhostButton}"
+                     Margin="0,0,8,8"
+                     Click="ExportPackageButton_Click"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <TextBlock Text="Created by Abdishakur Hussein"
+                               FontSize="9"
+                    Style="{StaticResource BodyText}"
+                     Margin="6,6,6,4"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- =============================== -->
+        <!-- MAIN CONTENT                    -->
+        <!-- =============================== -->
+        <Grid Grid.Column="1" Margin="16">
+
+            <!-- =============================== -->
+            <!-- WEB/API TESTING PANEL           -->
+            <!-- =============================== -->
+            <Grid x:Name="FrontEndPanel"
+                  Opacity="0">
+
+                <Grid.RenderTransform>
+                    <TranslateTransform X="40"/>
+                </Grid.RenderTransform>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- HEADER -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="The Automation Console"
+                                   Style="{StaticResource Heading1Text}"/>
+
+                        <TextBlock Text="Run and monitor Playwright automation from a desktop interface."
+                                   Style="{StaticResource BodyText}"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- STAT CARDS -->
+                <UniformGrid Grid.Row="1"
+                             Columns="5"
+                             Margin="0,20,0,20">
+
+                    <Border Style="{StaticResource StatCard}">
+                        <StackPanel>
+                            <TextBlock Text="Current Execution"
+                                       Style="{StaticResource BodyText}"/>
+
+                            <TextBlock x:Name="LastRunStatusText"
+                                       Text="No execution"
+                                       FontFamily="Cascadia Code"
+                                       FontSize="13"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
+                                       Margin="0,4,0,0"
+                                       TextWrapping="NoWrap"
+                                       TextTrimming="CharacterEllipsis"
+                                       ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+
+                            <TextBlock x:Name="LastRunTimeText"
+                                       Text="Select a test to begin"
+                                       FontFamily="Cascadia Code"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                       Margin="0,4,0,0"
+                                       TextWrapping="Wrap"
+                                       TextTrimming="CharacterEllipsis"
+                                       MaxHeight="34"
+                                       ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource StatCard}">
+                        <StackPanel>
+                            <TextBlock Text="Total Tests"
+                                       Style="{StaticResource BodyText}"/>
+
+                            <TextBlock x:Name="TotalScenariosText"
+                                       Text="0"
+                                       Style="{StaticResource Heading2Text}"
+                                       Margin="0,4,0,0"/>
+
+                            <TextBlock Text="Last run"
+                                       Style="{StaticResource BodyText}"
+                                       Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource StatCard}">
+                        <StackPanel>
+                            <TextBlock Text="Tests Passed"
+                                       Style="{StaticResource BodyText}"/>
+
+                            <TextBlock x:Name="PassedCountText"
+                                       Text="0"
+                                       Style="{StaticResource Heading2Text}"
+                                       Margin="0,4,0,0"/>
+
+                            <TextBlock Text="Last run"
+                                       Style="{StaticResource BodyText}"
+                                       Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource StatCard}">
+                        <StackPanel>
+                            <TextBlock Text="Tests Failed"
+                                       Style="{StaticResource BodyText}"/>
+
+                            <TextBlock x:Name="FailedCountText"
+                                       Text="0"
+                                       Style="{StaticResource Heading2Text}"
+                                       Margin="0,4,0,0"/>
+
+                            <TextBlock Text="Last run"
+                                       Style="{StaticResource BodyText}"
+                                       Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource StatCard}">
+                        <StackPanel>
+                            <TextBlock Text="Scenario Runs"
+                                       Style="{StaticResource BodyText}"/>
+
+                            <TextBlock x:Name="SingleRunCountText"
+                                       Text="0"
+                                       Style="{StaticResource Heading2Text}"
+                                       Margin="0,4,0,0"/>
+
+                            <TextBlock Margin="0,4,0,0">
+                                <Run Text="Passed: "
+                                     Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                <Run x:Name="SingleRunPassedText"
+                                     Text="0"
+                                     Foreground="#FF9AD691"/>
+                                <Run Text="  |  Failed: "
+                                     Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                <Run x:Name="SingleRunFailedText"
+                                     Text="0"
+                                     Foreground="#FFBD7070"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+
+                <!-- MAIN CARDS -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- RUN CONFIGURATION -->
+                    <Border Grid.Column="0"
+                            Style="{StaticResource Card}"
+                            Margin="0,0,16,14">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       Text="Run configuration"
+                                       Style="{StaticResource Heading2Text}"
+                                       Margin="0,0,0,10"/>
+
+                            <Grid Grid.Row="1"
+                                  Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- PLATFORM -->
+                                <StackPanel Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="0,0,12,8">
+
+                                    <TextBlock Text="Platform"
+                                               Style="{StaticResource BodyText}"/>
+
+                                    <ComboBox x:Name="PlatformCombo"
+                                              SelectedIndex="0"/>
+                                </StackPanel>
+
+                                <!-- TEST STYLE -->
+                                <StackPanel Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="0,0,0,8">
+
+                                    <TextBlock Text="Test Style"
+                                               Style="{StaticResource BodyText}"/>
+
+                                    <ComboBox x:Name="EnvironmentCombo"
+                                              SelectedIndex="0"/>
+                                </StackPanel>
+
+                                <!-- AREA -->
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="0"
+                                            Margin="0,0,12,0">
+
+                                    <TextBlock Text="Area"
+                                               Style="{StaticResource BodyText}"/>
+
+                                    <ComboBox x:Name="SuiteCombo"
+                                              SelectedIndex="0"
+                                              SelectionChanged="SuiteCombo_SelectionChanged"/>
+                                </StackPanel>
+
+                                <!-- SCENARIO -->
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="1">
+
+                                    <TextBlock Text="Scenario"
+                                               Style="{StaticResource BodyText}"/>
+
+                                    <ComboBox x:Name="BrowserCombo"
+                                              SelectedIndex="0"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <StackPanel Grid.Row="2"
+                                        Orientation="Horizontal"
+                                        Margin="0,12,0,0">
+
+                                <Button x:Name="RunScenarioButton"
+                                        Content="Run Scenario"
+                                        Style="{DynamicResource PrimaryButton}"
+                                        Click="RunScenarioButton_Click"/>
+
+                                <Button x:Name="RunSuiteButton"
+                                        Content="Run Area"
+                                        Style="{DynamicResource GhostButton}"
+                                        Margin="8,0,0,0"
+                                        Click="RunSuiteButton_Click"/>
+
+                                <Button x:Name="StopRunButton"
+                                        Content="Stop"
+                                        Style="{DynamicResource GhostButton}"
+                                        Margin="8,0,0,0"
+                                        IsEnabled="False"
+                                        Click="StopRunButton_Click"/>
+                            </StackPanel>
+
+                            <Border Grid.Row="3"
+                                    Background="{DynamicResource SurfaceAltBrush}"
+                                    BorderBrush="{DynamicResource BorderBrushColor}"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Padding="12"
+                                    Margin="0,18,0,0">
+
+                                <StackPanel>
+                                    <TextBlock Text="Test Preview"
+                                               Style="{StaticResource Heading2Text}"
+                                               Margin="0,0,0,8"/>
+
+                                    <TextBlock x:Name="TestPreviewTextBlock"
+                                               Style="{StaticResource BodyText}"
+                                               Text="Select a test to preview execution details."
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+
+                           
+                        </Grid>
+                    </Border>
+
+                    <!-- LOG PANEL -->
+                    <Border Grid.Column="1"
+                            Style="{StaticResource Card}">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0"
+                                        Orientation="Horizontal">
+
+                                <TextBlock Text="Run log"
+                                           Style="{StaticResource Heading2Text}"/>
+
+                                <Button Content="Clear"
+                                        Style="{StaticResource GhostButton}"
+                                        Margin="8,0,0,0"
+                                        Click="ClearLogButton_Click"/>
+                            </StackPanel>
+
+                            <ScrollViewer Grid.Row="1"
+                                          Margin="0,8,0,8"
+                                          VerticalScrollBarVisibility="Auto">
+
+                                <TextBox x:Name="LogTextBox"
+                                         AcceptsReturn="True"
+                                         IsReadOnly="True"
+                                         TextWrapping="Wrap"
+                                         Background="{DynamicResource SurfaceAltBrush}"
+                                         Foreground="{DynamicResource TextSecondaryBrush}"
+                                         BorderThickness="0"
+                                         MinHeight="150"/>
+                            </ScrollViewer>
+
+                            <StackPanel Grid.Row="2"
+                                        Orientation="Horizontal"
+                                        Margin="0,8,0,0">
+
+                                <TextBlock Text="Error log"
+                                           Style="{StaticResource Heading2Text}"/>
+
+                                <Button Content="Clear"
+                                        Style="{StaticResource GhostButton}"
+                                        Margin="8,0,0,0"
+                                        Click="ClearErrorLogButton_Click"/>
+                            </StackPanel>
+
+                            <ScrollViewer Grid.Row="3"
+                                          Margin="0,8,0,8"
+                                          VerticalScrollBarVisibility="Auto">
+
+                                <TextBox x:Name="ErrorLogTextBox"
+                                         AcceptsReturn="True"
+                                         IsReadOnly="True"
+                                         TextWrapping="Wrap"
+                                         Background="{DynamicResource SurfaceAltBrush}"
+                                         Foreground="Tomato"
+                                         BorderThickness="0"
+                                         MinHeight="100"/>
+                            </ScrollViewer>
+
+                            <TextBlock x:Name="StatusText"
+                                       Grid.Row="4"
+                                       Style="{StaticResource BodyText}"
+                                       Text="Status: Idle"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <!-- ================================================= -->
+            <!-- HIDDEN LEGACY PANELS REQUIRED BY CODE-BEHIND       -->
+            <!-- ================================================= -->
+
+            <Grid x:Name="DesktopPanel"
+                  Visibility="Collapsed">
+                <TextBlock x:Name="DesktopHeaderEnvironmentText"/>
+            </Grid>
+
+            <Grid x:Name="HhtPanel"
+                  Visibility="Collapsed">
+                <TextBlock x:Name="HhtHeaderEnvironmentText"/>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Window>

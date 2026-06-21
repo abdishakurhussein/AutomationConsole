@@ -1,0 +1,21 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build output
+bin/
+obj/
+
+# Node
+node_modules/
+
+# Playwright
+playwright-report/
+test-results/
+
+# Logs
+*.log
+
+# Rider
+.idea/
