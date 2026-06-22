@@ -140,8 +140,6 @@ Planned improvements include:
 * Azure DevOps integration
 * CI/CD execution support
 * Automated report publishing
-* Unreal Engine automation integration
-* Game QA automation tooling
 
 ---
 
